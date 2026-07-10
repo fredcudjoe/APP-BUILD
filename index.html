@@ -2495,6 +2495,35 @@ body{
 }
 </style>
 
+
+<style id="card-animation-smooth-fix">
+#cards .card-carousel{
+  scroll-behavior:smooth;
+  scroll-snap-type:x proximity;
+}
+#cards .bank-card{
+  animation:none !important;
+  transition:
+    opacity .22s linear,
+    filter .22s linear,
+    box-shadow .38s cubic-bezier(.22,.61,.36,1),
+    border-color .28s ease !important;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  transform:translate3d(var(--deck-x,0px),var(--lift,8px),0)
+    scale(var(--scale,.89))
+    rotateY(var(--rot-y,0deg))
+    rotateZ(var(--rot-z,0deg)) !important;
+  will-change:transform,opacity,filter;
+}
+#cards .card-slide::before{
+  transition:opacity .32s ease,transform .42s cubic-bezier(.22,.61,.36,1) !important;
+}
+#cards .card-dot{
+  transition:width .34s cubic-bezier(.22,.61,.36,1),background .25s ease,box-shadow .25s ease !important;
+}
+</style>
+
 </head><body>
 <div class="phone">
 
@@ -5223,52 +5252,93 @@ window.addEventListener('load', function(){
 
 <script id="premium-card-motion">
 (function(){
-  var raf=0, settle=0;
-  window.cardCenterActive=function(){
-    var c=document.getElementById('cardCarousel'); if(!c)return;
-    var s=c.querySelectorAll('.card-slide')[window._cardIdx||0]; if(!s)return;
+  var raf=0, settle=0, programmatic=false;
+
+  function carousel(){ return document.getElementById('cardCarousel'); }
+
+  window.cardCenterActive=function(behavior){
+    var c=carousel(); if(!c)return;
+    var slides=c.querySelectorAll('.card-slide');
+    var s=slides[window._cardIdx||0]; if(!s)return;
     var target=s.offsetLeft+s.offsetWidth/2-c.clientWidth/2;
     target=Math.max(0,Math.min(target,c.scrollWidth-c.clientWidth));
-    if(Math.abs(c.scrollLeft-target)>1)c.scrollTo({left:target,behavior:'smooth'});
+    if(Math.abs(c.scrollLeft-target)>1){
+      programmatic=true;
+      c.scrollTo({left:target,behavior:behavior||'smooth'});
+      clearTimeout(settle);
+      settle=setTimeout(function(){programmatic=false; window.cardMotion();},420);
+    }
   };
-  window.cardSlideSync=function(){
-    if(raf)cancelAnimationFrame(raf); raf=requestAnimationFrame(window.cardMotion);
-    clearTimeout(settle); settle=setTimeout(function(){
-      window.cardMotion(); window.cardCenterActive();
-    },140);
-  };
+
   window.cardMotion=function(){
-    var c=document.getElementById('cardCarousel'); if(!c)return;
+    raf=0;
+    var c=carousel(); if(!c)return;
     var slides=c.querySelectorAll('.card-slide');
-    var center=c.scrollLeft+c.clientWidth/2,best=0,dist=Infinity;
-    var held=Date.now()<(window._cardSelectHold||0);
+    var center=c.scrollLeft+c.clientWidth/2;
+    var best=0,dist=Infinity;
+
     slides.forEach(function(s,i){
       var mid=s.offsetLeft+s.offsetWidth/2;
       var raw=(mid-center)/Math.max(1,s.offsetWidth+20);
-      var p=Math.max(-1.15,Math.min(1.15,raw)),a=Math.min(1,Math.abs(p));
-      var d=Math.abs(raw); if(d<dist){dist=d;best=i}
-      s.style.setProperty('--scale',(1-a*.11).toFixed(3));
-      s.style.setProperty('--deck-x',(p*-8).toFixed(1)+'px');
-      s.style.setProperty('--lift',(a*10).toFixed(1)+'px');
-      s.style.setProperty('--rot-y',(p*-18).toFixed(2)+'deg');
-      s.style.setProperty('--rot-z',(p*1.2).toFixed(2)+'deg');
-      s.style.setProperty('--op',(1-a*.34).toFixed(3));
-      s.style.setProperty('--sat',(1.04-a*.26).toFixed(3));
-      s.style.setProperty('--bright',(1-a*.12).toFixed(3));
-      s.style.setProperty('--shine',(p*52-18).toFixed(1)+'%');
+      var p=Math.max(-1.1,Math.min(1.1,raw));
+      var a=Math.min(1,Math.abs(p));
+      var eased=a*a*(3-2*a);
+      var d=Math.abs(raw);
+      if(d<dist){dist=d;best=i;}
+
+      s.style.setProperty('--scale',(1-eased*.085).toFixed(4));
+      s.style.setProperty('--deck-x',(p*-5).toFixed(2)+'px');
+      s.style.setProperty('--lift',(eased*7).toFixed(2)+'px');
+      s.style.setProperty('--rot-y',(p*-11).toFixed(2)+'deg');
+      s.style.setProperty('--rot-z',(p*.55).toFixed(2)+'deg');
+      s.style.setProperty('--op',(1-eased*.22).toFixed(4));
+      s.style.setProperty('--sat',(1.03-eased*.16).toFixed(4));
+      s.style.setProperty('--bright',(1-eased*.075).toFixed(4));
+      s.style.setProperty('--shine',(p*38-18).toFixed(2)+'%');
     });
-    var active=held?(window._cardIdx||0):best;
-    slides.forEach(function(s,i){s.classList.toggle('active',i===active)});
-    if(!held && best!==(window._cardIdx||0)){
-      window._cardIdx=best; if(typeof window.cardRenderActive==='function')window.cardRenderActive();
-      if(typeof window._ptHaptic==='function')window._ptHaptic(4);
+
+    slides.forEach(function(s,i){s.classList.toggle('active',i===best);});
+    if(best!==(window._cardIdx||0)){
+      window._cardIdx=best;
+      if(typeof window.cardRenderActive==='function')window.cardRenderActive();
     }
   };
+
+  window.cardSlideSync=function(){
+    if(!raf) raf=requestAnimationFrame(window.cardMotion);
+    clearTimeout(settle);
+    if(!programmatic){
+      settle=setTimeout(function(){
+        var c=carousel(); if(!c)return;
+        var slides=c.querySelectorAll('.card-slide');
+        var center=c.scrollLeft+c.clientWidth/2,best=0,dist=Infinity;
+        slides.forEach(function(s,i){
+          var d=Math.abs((s.offsetLeft+s.offsetWidth/2)-center);
+          if(d<dist){dist=d;best=i;}
+        });
+        window._cardIdx=best;
+        if(typeof window.cardRenderActive==='function')window.cardRenderActive();
+        window.cardCenterActive('smooth');
+      },180);
+    }
+  };
+
+  window.cardSelect=function(i){
+    window._cardIdx=i;
+    if(typeof window.cardRenderActive==='function')window.cardRenderActive();
+    window.cardCenterActive('smooth');
+  };
+
   document.addEventListener('DOMContentLoaded',function(){
-    requestAnimationFrame(function(){
-      if(typeof window.cardRenderActive==='function')window.cardRenderActive();
-      window.cardCenterActive(); window.cardMotion();
-    });
+    var c=carousel();
+    if(c){
+      c.addEventListener('scroll',window.cardSlideSync,{passive:true});
+      requestAnimationFrame(function(){
+        if(typeof window.cardRenderActive==='function')window.cardRenderActive();
+        window.cardCenterActive('auto');
+        window.cardMotion();
+      });
+    }
   });
 })();
 </script>
