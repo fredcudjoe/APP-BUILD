@@ -2524,6 +2524,23 @@ body{
 }
 </style>
 
+<style id="cross-browser-mobile-optimization">
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;-webkit-tap-highlight-color:transparent;height:100%}
+body{min-height:100vh;min-height:100dvh;overscroll-behavior-y:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;touch-action:manipulation}
+button,input,select,textarea{font:inherit} button,.ic-btn,[role="button"],a{touch-action:manipulation;-webkit-user-select:none;user-select:none}
+input,textarea,select{font-size:16px!important}
+.screen{min-height:100vh;min-height:100dvh;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
+.statusbar{padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.appbar{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+#cards .card-carousel{-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none}
+#cards .card-carousel::-webkit-scrollbar{display:none}
+#cards .bank-card{-webkit-backface-visibility:hidden;backface-visibility:hidden}
+img,svg{max-width:100%}
+@supports not (height:100dvh){body,.screen{min-height:100vh}}
+@media(max-width:380px){.fh-body,.screen-body{padding-left:14px;padding-right:14px}#cards .card-slide{min-width:88vw}}
+@media(min-width:768px){body{max-width:520px;margin:0 auto}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
 </head><body>
 <div class="phone">
 
@@ -5331,6 +5348,14 @@ window.addEventListener('load', function(){
       });
     }
   });
+})();
+</script>
+<script id="cross-browser-runtime-fixes">
+(function(){
+ function setVH(){document.documentElement.style.setProperty('--app-vh',(window.innerHeight*.01)+'px')}
+ setVH();window.addEventListener('resize',setVH,{passive:true});window.addEventListener('orientationchange',function(){setTimeout(setVH,120)},{passive:true});
+ window.safeScrollTo=function(el,left,top,behavior){if(!el)return;try{el.scrollTo({left:left||0,top:top||0,behavior:behavior||'smooth'})}catch(e){el.scrollLeft=left||0;el.scrollTop=top||0}};
+ document.addEventListener('focusout',function(){setTimeout(function(){setVH()},80)});
 })();
 </script>
 </body></html>
