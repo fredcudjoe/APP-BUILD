@@ -6122,7 +6122,8 @@ window.addEventListener('load', function(){
 
 <style>
 /* ── swipe-back gesture ── */
-.phone{ touch-action:pan-y; }
+.phone{ touch-action:pan-y; overscroll-behavior-x:none; }
+html,body{ overscroll-behavior-x:none; }
 .screen.sw-drag{ transition:none !important; z-index:20; user-select:none; -webkit-user-select:none;
   box-shadow:-14px 0 34px rgba(0,0,0,.34); }
 .screen.sw-peek{ opacity:1 !important; pointer-events:none !important; z-index:10; }
@@ -6158,8 +6159,11 @@ window.addEventListener('load', function(){
     syncHistory();
   };
 
+  /* Keep exactly one spare history entry ahead of us at all times.
+     The browser's Back (and the phone's native edge-swipe) then always has an
+     entry to consume, so it can never step off the end and close the app. */
   function syncHistory(){
-    try{ history.pushState({depth:stack.length}, ''); }catch(e){}
+    try{ history.pushState({fbGuard:true, depth:stack.length}, ''); }catch(e){}
   }
 
   /* Is anything open that back should close first? (sheets, modals, overlays) */
@@ -6185,12 +6189,21 @@ window.addEventListener('load', function(){
   };
   window.navStack = function(){ return stack.slice(); };
 
-  /* ── hardware / browser back button ── */
+  /* ── hardware / browser back button (and the OS edge-swipe) ── */
   window.addEventListener('popstate', function(){
-    if(!window.navBack()) return;               /* nothing to pop → let it be */
-    syncHistory();                              /* keep a state to consume next time */
+    /* The browser has just consumed one entry. Whatever happens, immediately put
+       a fresh guard entry back so the NEXT back press also has something to eat. */
+    var moved = window.navBack();               /* close a sheet, or go back a screen */
+    syncHistory();
+    if(!moved){
+      /* We are on a root tab with nowhere to go. Do not let the app close:
+         bounce to Home if we are elsewhere, otherwise simply stay put. */
+      var cur = (document.querySelector('.screen.active')||{}).id;
+      if(cur && cur !== 'home'){ stack=['home']; if(typeof _prev==='function') _prev('home'); }
+    }
   });
-  try{ history.replaceState({depth:1}, ''); }catch(e){}
+  /* seed the guard entry */
+  try{ history.replaceState({fbGuard:true, depth:1}, ''); history.pushState({fbGuard:true, depth:1}, ''); }catch(e){}
 
   /* ── edge-swipe gesture ── */
   var phone = document.querySelector('.phone') || document.body;
