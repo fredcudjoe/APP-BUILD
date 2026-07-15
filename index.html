@@ -5348,6 +5348,75 @@ document.addEventListener('pointerdown',function(e){
   "24/7 toll-free: 0800 00 3355. From abroad: +233 032 819292. Kukua WhatsApp: 054 431 5500. USSD: *776#. Website: fidelitybank.com.gh. Head Office: Ridge Towers, Accra."
   ].join("\n");
 
+  /* KB_FULL — the same fidelitybank.com.gh content as a keyword-scored index,
+     so the OFFLINE fallback (chat AND voice) can answer any bank topic too. */
+  var KB_FULL=[
+  {k:['fidelity','about fidelity','history','founded','established','who is fidelity','tier 1','largest bank','privately owned','subsidiar','ridge towers','head office','headquarters','brand promise'],
+   a:'Fidelity Bank Ghana, founded in 2006, is the largest privately-owned Ghanaian bank and a Tier 1 bank, headquartered at Ridge Towers, Accra. Its subsidiaries are Fidelity Asia Bank and Fidelity Securities, and its brand promise is \u201cTogether We\u2019re More\u201d.'},
+  {k:['current account','chequebook','cheque book','foreign currency account','multi currency','usd account','euro account'],
+   a:'The Fidelity Current Account gives you unlimited 24/7 transactions, a personalized chequebook and Visa debit card, in GHS, USD, EUR or GBP \u2014 with free SMS/email alerts and free access to *776#, the Mobile App and WhatsApp banking.'},
+  {k:['premium current','earn interest current','instant overdraft'],
+   a:'The Premium Current Account makes your money work while it sits \u2014 earning interest on your daily balance, with instant overdraft access and highly personalized service.'},
+  {k:['smart account','minimum balance','opening balance','open instantly','income earners'],
+   a:'The SMART Account opens instantly with just a valid Ghana Card \u2014 GHS 20 to start, GHS 5 minimum operating balance, no monthly service charge, unlimited withdrawals and a daily withdrawal limit of GHS 10,000.'},
+  {k:['smart lite','paperless account'],
+   a:'Smart Lite is an instant, paperless account you open by dialling *776# with just a valid ID \u2014 no forms, no branch visit, no manual verification.'},
+  {k:['reserve account','savings account','withdrawal booklet'],
+   a:'The Fidelity Reserve Account is a savings account with a personalized withdrawal booklet and your choice of Visa debit or prepaid card \u2014 trackable on *776#, the Mobile App and WhatsApp banking.'},
+  {k:['smart goal','school fees','save for child','education savings','goal account','free insurance savings'],
+   a:'The Smart Goal account lets you save daily, weekly or monthly at a flat 7% interest (minimum GHS 30 operating balance), with free insurance benefits. Opening balance is GHS 50, and you can pay school fees directly from it.'},
+  {k:['lifestyle investment','flip','fixed deposit','fixed term','treasury bill','t-bill','tbill','unit trust','invest my money','high interest'],
+   a:'For investing, Fidelity offers the Lifestyle Investment Plan with high-interest returns, Fixed Term Deposits, Treasury Bill services, and a Fixed Income Unit Trust through Fidelity Securities. I can open Investments for you to explore.'},
+  {k:['loan options','types of loans','auto loan','gma','cagd','loan top up','personal loan','salaried loan','loan tenor','loan calculator'],
+   a:'Fidelity offers Salary Advances, Salaried and Personal Loans (tenors from 6 to 72 months), Auto Loans including the GMA Auto Loan, CAGD Loans, Loan Top-Ups, Mortgages and Asset Finance \u2014 all with competitive rates and quick applications.'},
+  {k:['salary advance','advance on salary','bridge to payday','mid month'],
+   a:'The Salary Advance gives you up to 60% of your net monthly salary (max GHS 25,000), interest charged only on what you use, flexible repayment up to 3 months, and it\u2019s renewable every 3 months with good performance.'},
+  {k:['mortgage','buy a house','home loan','buy property'],
+   a:'Fidelity offers mortgage facilities \u2014 including up to US$500,000 for Non-Resident Ghanaians. For full terms and rates, call 0800 00 3355 or visit any branch.'},
+  {k:['asset finance','no collateral','acquire property','consumer finance'],
+   a:'Personal Asset Finance helps you acquire property or assets in approved locations across Ghana \u2014 with no collateral required and competitive interest rates. Executive account holders even enjoy zero-interest Asset/Consumer Finance loans.'},
+  {k:['sme','business loan','term loan','working capital','trade finance','overdraft business','turnover','girsal','agro loan','syndicated'],
+   a:'For businesses, Fidelity offers the SME Semi-Secured Term Loan (GHS 50,000\u20131,000,000, tenor 6\u201324 months, for SMEs with GHS 100,000+ annual turnover), plus overdrafts, working capital, trade finance and syndicated loans. Agro loans can use GIRSAL guarantees.'},
+  {k:['non resident','non-resident','nrg','diaspora','living abroad','from abroad','support family'],
+   a:'The NRG proposition lets Ghanaians abroad bank from anywhere \u2014 multi-currency accounts, 2% p.a. interest on NRG-GHS funds, mortgages up to US$500,000, plus a personalized chequebook and Visa debit card with lifestyle discounts.'},
+  {k:['card types','debit card','prepaid card','e-zwich','ezwich','which cards'],
+   a:'Fidelity offers Visa Classic, Gold and Platinum debit cards, prepaid cards and the E-zwich smart card \u2014 for instant access locally and internationally. The Classic is issued instantly at any branch.'},
+  {k:['gold card','gold visa','agoda','hotel discount'],
+   a:'The Visa Gold Debit Card (for Prime/Executive clients earning GHS 3,000\u20139,999) is issued within 10 business days, valid 3 years, can raise international online limits to US$50,000 on request, and gives up to 7% hotel discounts via agoda.com/visa.'},
+  {k:['platinum','concierge','airport lounge','prestige card','medical referral'],
+   a:'The Visa Platinum Card, exclusive to Prestige clients, adds concierge services, airport lounge access, telephone medical advice, free medical referrals and legal services, and emergency medical evacuation arrangements. FX limits go up to USD/EUR/GBP 20,000.'},
+  {k:['register whatsapp','kukua pin','whatsapp banking','sign up kukua','054 431','whatsapp number'],
+   a:'To register for WhatsApp banking, save 054 431 5500, send \u201chi\u201d and follow the prompts \u2014 use the mobile number on your banking records and create a 4-digit PIN. Then I can help you 24/7 right inside WhatsApp!'},
+  {k:['whatsapp limit','transfer on whatsapp','airtime limit','bill fee','whatsapp charge','whatsapp fee','whatsapp secure','whatsapp safe'],
+   a:'On WhatsApp banking, transfers between Fidelity accounts are capped at GHS 2,000, airtime top-ups at GHS 500 daily, and DStv/GOtv bill payments carry a 1% flat fee. It\u2019s PIN-protected with session expiry \u2014 and works on one phone at a time.'},
+  {k:['ussd','776','no internet','no smartphone','any phone'],
+   a:'Dial *776# from any phone \u2014 no internet needed \u2014 to check balances, transfer money, buy airtime, or open a Smart Lite account instantly with just a valid ID.'},
+  {k:['mobile app','download app','budgeting','app features'],
+   a:'The Fidelity Mobile App is a bank branch in your palm \u2014 transfers, bill payments, budgeting, investment tools and more, on iOS and Android, anywhere in the world.'},
+  {k:['internet banking','online banking','rib','corporate banking online'],
+   a:'Fidelity offers free Retail and Corporate Internet Banking \u2014 transfers, bill payments and full account access from work or home. You can activate Retail Internet Banking under Settings \u2192 Manage RIB Access.'},
+  {k:['agent banking','agency banking','nearest agent'],
+   a:'Fidelity\u2019s Agency Banking network has about 4,000 agents nationwide, bringing deposits, withdrawals and account services right into your neighbourhood.'},
+  {k:['remittance','western union','moneygram','ria','receive money','money from abroad','small world','unity link','hello paisa'],
+   a:'You can receive money from anywhere in the world in as little as 10 minutes at any Fidelity branch \u2014 via Western Union, MoneyGram, Ria, Vigo, SAMBA, Unity Link, Hello Paisa, Small World and Trans-Fast. Even non-customers can collect.'},
+  {k:['payment gateway','merchant','accept payments','ecommerce','online store','mastercard'],
+   a:'Fidelity\u2019s payment gateway lets businesses accept Visa and Mastercard payments on their websites, with real-time reporting, billing-system integration and full technical support before and after setup.'},
+  {k:['insurance','bancassurance','prudential','life insurance','motor insurance','health insurance'],
+   a:'Through Bancassurance with Prudential Life, Fidelity arranges life, health, motor and other insurance to protect what matters most. Ask at any branch or call 0800 00 3355.'},
+  {k:['prestige banking','relationship manager','wealth','high net worth','qualify prestige'],
+   a:'Fidelity Prestige Banking offers bespoke service with a dedicated relationship manager, premium wealth protection and exclusive global privileges. You qualify with a GHS 10,000 minimum salary, or GHS 100,000+ in assets if non-salaried.'},
+  {k:['rewards','loyalty','points','fidelity rewards'],
+   a:'Fidelity Rewards lets you earn and redeem points as you bank. You\u2019ll find it right in this app \u2014 want me to open the Rewards hub?'},
+  {k:['contact','support line','customer care','call the bank','complain to bank','phone the bank'],
+   a:'Fidelity Bank\u2019s 24/7 contact centre is on 0800 00 3355 (toll-free), or +233 032 819292 when calling from abroad. You can also chat with me on WhatsApp at 054 431 5500.'},
+  {k:['branch','branches','atm','atms','locate','nearest branch','how many branches'],
+   a:'Fidelity has 75+ branches, about 4,000 agents and 114+ ATMs across Ghana, with the head office at Ridge Towers, Accra. The website\u2019s branch locator will find your nearest one.'},
+  {k:['exchange rate','fx','forex','buy dollars','foreign exchange'],
+   a:'Fidelity offers FX purchase for personal or business use, and FX Sales right here under Transfers. For today\u2019s rates, check the Currency Converter in Account Services or call 0800 00 3355.'},
+  {k:['careers','jobs','vacancies','work at fidelity','graduate'],
+   a:'Fidelity Bank recruits across roles \u2014 including early-career and graduate programmes. Visit the Careers section on fidelitybank.com.gh to see current vacancies.'}
+  ];
+
   function sysPrompt(){
     var bal=primaryBalance()||'14,273.80';
     return "You are Kukua, the warm, friendly AI banking assistant inside the Fidelity Bank Ghana mobile app. "
@@ -5417,6 +5486,34 @@ document.addEventListener('pointerdown',function(e){
         reply:'You can switch between dark and light under Settings \u2192 Theme (it\u2019s the last option) \u2014 or just tell me \u201cswitch to light mode\u201d and I\u2019ll do it.', ai:false};
     }
 
+    /* --- BANK KNOWLEDGE BASE answers (offline) — mirrors BANK_KB so chat AND voice
+       can answer real Fidelity Bank questions even without the AI endpoint --- */
+    function kb(reply){ return {type:'chat', amount:null, payee:null, card:null, mode:null, reply:reply, ai:false}; }
+    if(/whats\s?app|kukua.*(number|whatsapp)|chat.*kukua/.test(q))
+      return kb('You can also chat with me on WhatsApp! Save 054 431 5500, send \u201chi\u201d and follow the prompts. I can check balances, send mini statements, transfer funds, top up airtime and pay bills \u2014 24/7.');
+    if(/(open|create|start).*(account)|account.*(requirement|need|ghana card)/.test(q))
+      return kb('Opening an account is easy \u2014 with just a valid Ghana Card you can open a SMART Account instantly (GHS 20 to start, no monthly service charge). No smartphone? Dial *776# to open a Smart Lite account, fully paperless.');
+    if(/(salary advance|advance.*salary|loan.*(salary|personal)|borrow)/.test(q))
+      return kb('Fidelity\u2019s Salary Advance gives you up to 60% of your net monthly salary (max GHS 25,000), with interest only on what you use and flexible repayment up to 3 months. Want me to open Loans?');
+    if(/(classic|gold|platinum|visa).*(limit|abroad|international|discount|benefit)|(limit|abroad|international|discount).*(classic|gold|platinum|visa)/.test(q))
+      return kb('The Classic Visa has a daily POS/online limit of GHS 15,000. Gold cards can raise international online limits to US$50,000 on request, and Platinum adds concierge service and airport lounge access. Travelling? Tell the bank 24 hours before using your card abroad.');
+    if(/(contact|support|help.?line|phone number|call.*(bank|support|fidelity)|customer (care|service))/.test(q))
+      return kb('You can reach Fidelity Bank\u2019s 24/7 contact centre on 0800 00 3355 (toll-free), or +233 032 819292 when calling from abroad.');
+    if(/\*?776|ussd|no (internet|smartphone|data)/.test(q))
+      return kb('No internet? No problem \u2014 dial *776# from any phone to check balances, transfer money, buy airtime, or even open a Smart Lite account instantly.');
+    if(/(branch|atm).*(where|near|how many|locat)|how many (branches|atms)/.test(q))
+      return kb('Fidelity Bank has 75+ branches, about 4,000 agents and 114+ ATMs across Ghana, with the head office at Ridge Towers, Accra. The website\u2019s branch locator can find the one nearest you.');
+    if(/(remit|western union|moneygram|receive money|send money.*(abroad|ghana)|money transfer.*(abroad|international))/.test(q))
+      return kb('You can receive money from anywhere in the world in as little as 10 minutes at any Fidelity branch \u2014 through Western Union, MoneyGram, Ria, Small World, Unity Link and more. Even non-customers can collect.');
+    if(/prestige/.test(q))
+      return kb('Fidelity Prestige Banking gives you a dedicated relationship manager and bespoke services. You qualify with a minimum salary of GHS 10,000, or GHS 100,000+ in assets under management if non-salaried.');
+    if(/(smart goal|savings.*(interest|rate)|save.*(school|child))/.test(q))
+      return kb('The Smart Goal account lets you save daily, weekly or monthly at a flat 7% interest (min GHS 30 operating balance), with free insurance benefits \u2014 and you can pay school fees straight from it. Opening balance is just GHS 50.');
+    if(/mortgage/.test(q))
+      return kb('Fidelity offers mortgages including up to US$500,000 for Non-Resident Ghanaians. For full terms, call 0800 00 3355 or visit any branch.');
+    if(/(insurance|bancassurance)/.test(q))
+      return kb('Through Bancassurance with Prudential Life, Fidelity can arrange life, health, motor and other insurance for you. Ask at any branch or call 0800 00 3355.');
+
     /* --- navigational / action intents --- */
     var card = /gold/.test(q) ? 'gold' : (/(classic|silver)/.test(q) ? 'classic' : null);
 
@@ -5446,6 +5543,24 @@ document.addEventListener('pointerdown',function(e){
       var mode = /light/.test(q) ? 'light' : 'dark';
       return {type:'theme', amount:null, payee:null, card:null, mode:mode, reply:'', ai:false};
     }
+
+    /* --- full-site knowledge lookup — scores the query against KB_FULL so
+       chat AND voice can answer any fidelitybank.com.gh topic offline.
+       Runs AFTER the action intents (so commands are never hijacked) and
+       BEFORE navigation. Phrases score 3, single keywords 1; questions
+       need >=2, statements >=3. --- */
+    var _kbBest=null,_kbScore=0;
+    var _isQ=/\b(what|how|why|when|where|who|which|tell me|do (you|i)|does|can i|is there|explain|about|info)\b/.test(q);
+    for(var _ki=0;_ki<KB_FULL.length;_ki++){
+      var _s=0,_keys=KB_FULL[_ki].k;
+      for(var _kj=0;_kj<_keys.length;_kj++){
+        var _key=_keys[_kj];
+        if(_key.indexOf(' ')>-1){ if(q.indexOf(_key)>-1) _s+=3; }
+        else if(new RegExp('\\b'+_key,'i').test(q)) _s+=1;
+      }
+      if(_s>_kbScore){ _kbScore=_s; _kbBest=KB_FULL[_ki]; }
+    }
+    if(_kbBest && (_kbScore>=3 || (_isQ && _kbScore>=2))) return kb(_kbBest.a);
 
     if(/(balance|how much.*(have|account)|my money)/.test(q)) t='balance';
     else if(/(spend|spent|spending)/.test(q)) t='spend';
